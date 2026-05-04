@@ -1,0 +1,91 @@
+# Compiled class file
+*.class
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# ------------------------------------------------------------------
+# Standard ignores for Java / Maven / Cucumber / Spring projects
+# ------------------------------------------------------------------
+
+# Build output
+target/
+build/
+out/
+
+# Maven
+.mvn/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+# Logs and runtime files
+*.log
+logs/
+hs_err_pid*
+replay_pid*
+
+# Test reports and coverage
+target/surefire-reports/
+target/failsafe-reports/
+target/cucumber-reports/
+target/*-reports/
+test-output/
+coverage/
+jacoco.exec
+jacoco-agent.jar
+
+# Cucumber / Gherkin artifacts
+cucumber.json
+cucumber-report.html
+
+# Spring / application
+.springBeans.xml
+spring.log
+
+# Generated sources
+target/generated-sources/
+target/generated-test-sources/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / local files
+.env
+.env.*
+*.local
+
+# Temporary / swap
+*.tmp
+*.temp
+*~
+
+# Package files (archives/build artifacts)
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Ignore IDE specific folders that might accidentally be committed
+# (IntelliJ already covered above but be explicit for some files)
+.idea_modules/
+
+# End
