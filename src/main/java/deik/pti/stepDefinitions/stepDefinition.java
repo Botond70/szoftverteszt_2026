@@ -1,6 +1,7 @@
 package deik.pti.stepDefinitions;
 
 import deik.pti.factory.WebDriverFactory;
+import deik.pti.pageObjects.CommunitiesPage;
 import deik.pti.pageObjects.HomePage;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
@@ -15,6 +16,7 @@ import java.util.List;
 public class stepDefinition {
     private final WebDriverFactory factory = new WebDriverFactory();
     private final HomePage homePage = new HomePage(factory);
+    private final CommunitiesPage communitiesPage = new CommunitiesPage(factory);
 
     @Given("the Home page is opened")
     public void theHomePageIsOpened() {
@@ -43,6 +45,23 @@ public class stepDefinition {
         List<String> violations = homePage.getPopularCardsWithNonEnglishIndicator();
         Assert.assertTrue(
             "Non-English language indicators found in Popular section: " + String.join("; ", violations),
+            violations.isEmpty()
+        );
+    }
+    @When("there are multiple communities shown in the grid")
+    public void thereAreMultipleCommunitiesShownInTheGrid() {
+        List<String> violations = communitiesPage.getCommunitiesDisplayed();
+        Assert.assertTrue(
+            "Expected multiple community cards to be displayed, but found issues: " + String.join("; ", violations),
+            violations.isEmpty()
+        );
+    }
+
+    @Then("in each grid cell the join button height is consistent")
+    public void inEachGridCellTheJoinButtonHeightIsConsistent() {
+        List<String> violations = communitiesPage.getJoinButtonHeightIssues();
+        Assert.assertTrue(
+            "Inconsistent join button heights found: " + String.join("; ", violations),
             violations.isEmpty()
         );
     }
