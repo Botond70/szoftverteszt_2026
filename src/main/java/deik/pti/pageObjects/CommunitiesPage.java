@@ -24,6 +24,9 @@ public class CommunitiesPage extends CommonPage {
   private static final By CARD_TITLE = By.cssSelector(".evnt-name-wrapper > h2 > span");
   private static final By JOIN_BUTTON = By.cssSelector(".evnt-button-wrapper > .evnt-reg-wrapper > button");
 
+  private static final By MORE_FILTERS_BUTTON = By.cssSelector(".evnt-toggle-filters-button");
+  private static final By LANGUAGE_DROPDOWN = By.cssSelector("#filter_language");
+  private static final By LANGUAGE_OPTIONS = By.cssSelector(".evnt-filter-menu-scroll .form-check-label");
 
   public void open() {
       driver.get(COMMUNITIES_PAGE_URL);
@@ -94,6 +97,16 @@ public class CommunitiesPage extends CommonPage {
         break;
     }
     return violations;
+  }
+
+  public String getFirstLanguageFilterOption() {
+    wait.until(ExpectedConditions.elementToBeClickable(MORE_FILTERS_BUTTON)).click();
+    wait.until(ExpectedConditions.elementToBeClickable(LANGUAGE_DROPDOWN)).click();
+    List<WebElement> options = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(LANGUAGE_OPTIONS));
+    if (options.isEmpty()) {
+      return "";
+    }
+    return options.get(0).getText().trim();
   }
 
 
