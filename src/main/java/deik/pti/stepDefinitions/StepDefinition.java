@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class stepDefinition {
+public class StepDefinition {
     private final WebDriverFactory factory = new WebDriverFactory();
     private final HomePage homePage = new HomePage(factory);
     private final CommunitiesPage communitiesPage = new CommunitiesPage(factory);
