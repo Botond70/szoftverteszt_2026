@@ -17,16 +17,39 @@ public class CommunitiesPage extends CommonPage {
         super(factory);
     }
   
-  private static final String COMMUNITIES_PAGE_URL = "https://wearecommunity.io/commuties";
+  private static final String COMMUNITIES_PAGE_URL = "https://wearecommunity.io/communities";
   private static final By COMMUNITIES_SECTION = By.cssSelector(".evnt-panel .evnt-communities-panel");
   private static final By COMMUNITY_CARDS = By.cssSelector(".evnt-communities-column .evnt-community-card");
   private static final By COMMUNITY_CARD_LINKS = By.cssSelector(".evnt-community-card a[href*='/communities']");
   private static final By CARD_TITLE = By.cssSelector(".evnt-name-wrapper > h2 > span");
   private static final By JOIN_BUTTON = By.cssSelector(".evnt-button-wrapper > .evnt-reg-wrapper > button");
 
+  private static final By MORE_FILTERS_BUTTON = By.cssSelector(".evnt-toggle-filters-button");
+  private static final By LANGUAGE_DROPDOWN = By.cssSelector("button#filter_language");
+  private static final By LANGUAGE_OPTIONS = By.cssSelector(".evnt-filter-menu-scroll .form-check-label");
 
   public void open() {
       driver.get(COMMUNITIES_PAGE_URL);
+      wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".evnt-communities-column")));
+  }
+
+  public String getFirstLanguageFilterOption() {
+    WebElement moreFilters = wait.until(ExpectedConditions.elementToBeClickable(MORE_FILTERS_BUTTON));
+    scrollIntoView(moreFilters);
+    moreFilters.click();
+    WebElement langDropdown = wait.until(ExpectedConditions.elementToBeClickable(LANGUAGE_DROPDOWN));
+    scrollIntoView(langDropdown);
+    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", langDropdown);
+    // Megvárjuk hogy a Language dropdown nyitva legyen (opciók betöltése)
+    wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(LANGUAGE_OPTIONS, 0));
+    // A Language gomb szülő containerén belül keressük az első label-t
+    String text = (String) ((JavascriptExecutor) driver).executeScript(
+        "var btn = document.querySelector('button#filter_language');" +
+        "var parent = btn ? btn.closest('.evnt-filter-col, .evnt-filter-group, .dropdown, .evnt-filter-item, .col') : null;" +
+        "var label = parent ? parent.querySelector('.form-check-label') : null;" +
+        "return label ? label.textContent.trim() : '';"
+    );
+    return text != null ? text : "";
   }
 
   private void scrollIntoView(WebElement element) {
