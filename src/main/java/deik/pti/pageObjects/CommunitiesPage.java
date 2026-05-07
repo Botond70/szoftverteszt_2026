@@ -37,19 +37,27 @@ public class CommunitiesPage extends CommonPage {
     WebElement moreFilters = wait.until(ExpectedConditions.elementToBeClickable(MORE_FILTERS_BUTTON));
     scrollIntoView(moreFilters);
     moreFilters.click();
+    
     WebElement langDropdown = wait.until(ExpectedConditions.elementToBeClickable(LANGUAGE_DROPDOWN));
     scrollIntoView(langDropdown);
-    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", langDropdown);
-    // Megvárjuk hogy a Language dropdown nyitva legyen (opciók betöltése)
+    langDropdown.click();
+    
+    // 1. Megvárjuk, hogy betöltődjön legalább egy opció valahol az oldalon
     wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(LANGUAGE_OPTIONS, 0));
-    // A Language gomb szülő containerén belül keressük az első label-t
-    String text = (String) ((JavascriptExecutor) driver).executeScript(
-        "var btn = document.querySelector('button#filter_language');" +
-        "var parent = btn ? btn.closest('.evnt-filter-col, .evnt-filter-group, .dropdown, .evnt-filter-item, .col') : null;" +
-        "var label = parent ? parent.querySelector('.form-check-label') : null;" +
-        "return label ? label.textContent.trim() : '';"
+    
+    // 2. Tiszta Selenium megoldás a JS 'closest()' helyett:
+    // Megkeressük a Language gomb legközelebbi olyan szülőjét, ami egy szűrő doboz
+    WebElement parentContainer = langDropdown.findElement(
+        By.xpath("./ancestor::*[contains(@class, 'evnt-filter-col') or contains(@class, 'dropdown') or contains(@class, 'evnt-filter-item')][1]")
     );
-    return text != null ? text : "";
+    
+    // 3. Ezen a szülő dobozon BELÜL keressük meg az első labelt
+    WebElement firstLabel = parentContainer.findElement(By.cssSelector(".form-check-label"));
+    
+    // 4. A getText() helyett getAttribute("textContent")-et használunk, ami beolvassa a rejtett/animáló szöveget is
+    String text = firstLabel.getAttribute("textContent");
+    
+    return text != null ? text.trim() : "";
   }
 
   private void scrollIntoView(WebElement element) {
